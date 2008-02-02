@@ -136,14 +136,15 @@ use Carp;
 
 use base qw(Log::Log4perl::Layout::PatternLayout);
 
-# Global variables used by function render, the idea is to copy them here so we
-# can copy the contents of render here without problems.
-my $CSPECS = 'R' . $Log::Log4perl::Layout::PatternLayout::CSPECS;
-
+# Global variables used by the function render(), the idea is to copy them here
+# so we can copy the contents of render() here without problems.
 my $HOSTNAME = $Log::Log4perl::Layout::PatternLayout::HOSTNAME;
 my $TIME_HIRES_AVAILABLE = $Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE;
 my $PROGRAM_START_TIME = $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME;
 my $TIME_HIRES_AVAILABLE_WARNED = $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME;
+
+# PATCH: add %R to the list of formats available
+my $CSPECS = 'R' . $Log::Log4perl::Layout::PatternLayout::CSPECS;
 
 =head2 new
 
@@ -157,6 +158,7 @@ sub new {
 
     my $type = shift;
 		
+		# PATCH: force our CSPECS through the constructor
 		local $Log::Log4perl::Layout::PatternLayout::CSPECS = $CSPECS;
 		my $self = $type->SUPER::new(@_);
 		$self->{CSPECS} = $CSPECS;
@@ -173,7 +175,7 @@ needed in order to add the fucntionality required for the format C<%R>.
 
 =cut
 
-sub render {
+sub render2 {
     my($self, $message, $category, $priority, $caller_level) = @_;
 
     $caller_level = 0 unless defined $caller_level;
@@ -244,7 +246,8 @@ sub render {
     $info{p} = $priority;
     $info{P} = $$;
     $info{H} = $HOSTNAME;
-
+    
+    # PATCH: share the computation of the time with %r
     if($self->{info_needed}->{r} || $self->{info_needed}->{R}) {
         if($TIME_HIRES_AVAILABLE) {
             $info{r} = 
@@ -257,6 +260,7 @@ sub render {
             $info{r} = time() - $PROGRAM_START_TIME;
         }
     }
+    # PATCH: compute the value of %R
     if($self->{info_needed}->{R}) {
         my $current_time = $info{r};
         my $last_time = $self->{last_time} || $current_time;
