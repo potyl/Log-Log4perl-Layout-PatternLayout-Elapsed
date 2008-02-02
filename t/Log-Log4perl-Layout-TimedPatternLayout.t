@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 6;
+use Test::More tests => 7;
 
 BEGIN {
 	use_ok('Log::Log4perl::Layout::TimedPatternLayout');
@@ -20,6 +20,20 @@ sub main {
 
 	init_logger();
 	
+	# Count the number of warnings issued by log4perl.
+	# Here we are testing that the modifications to the layout don't affect the
+	# PatternLayout. PatternLayout should complaing about %R.
+	my $warns = 0;
+	local $SIG{__WARN__} = sub {
+		my ($message) = @_;
+		if ($message =~ /^Invalid conversion in sprintf: "%R"/) {
+			++$warns;
+			return;
+		}
+		warn @_;
+	};
+
+
 	# Start some logging
 	INFO "Start";
 
@@ -53,6 +67,8 @@ sub main {
 	
 	compare_times($a[0] + $a[1] + $a[2], $b[0] + $b[1], "A1 + A2 + A3 == B1 + B2");
 	compare_times($a[3] + $a[4], $b[2], "A4 + A5 == B3");
+	
+	is($warns, 3, "Appender C issued warnings");
 
 	return 0;
 }
@@ -100,7 +116,7 @@ sub compare_times {
 sub init_logger {
 
 	my $conf = <<'__END__';
-log4perl.rootLogger = ALL, A, B
+log4perl.rootLogger = ALL, A, B, C
 
 log4perl.appender.A = Log::Log4perl::Appender::TestBuffer
 log4perl.appender.A.layout = Log::Log4perl::Layout::TimedPatternLayout
@@ -111,6 +127,11 @@ log4perl.appender.B = Log::Log4perl::Appender::TestBuffer
 log4perl.appender.B.layout = Log::Log4perl::Layout::TimedPatternLayout
 log4perl.appender.B.layout.ConversionPattern = B %Rms %m%n
 log4perl.appender.B.Threshold = INFO
+
+log4perl.appender.C = Log::Log4perl::Appender::TestBuffer
+log4perl.appender.C.layout = Log::Log4perl::Layout::PatternLayout
+log4perl.appender.C.layout.ConversionPattern = C %Rms %m%n
+log4perl.appender.C.Threshold = INFO
 __END__
 
 	Log::Log4perl->init(\$conf);
