@@ -136,7 +136,14 @@ use Carp;
 
 use base qw(Log::Log4perl::Layout::PatternLayout);
 
+# Global variables used by function render, the idea is to copy them here so we
+# can copy the contents of render here without problems.
 my $CSPECS = 'R' . $Log::Log4perl::Layout::PatternLayout::CSPECS;
+
+my $HOSTNAME = $Log::Log4perl::Layout::PatternLayout::HOSTNAME;
+my $TIME_HIRES_AVAILABLE = $Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE;
+my $PROGRAM_START_TIME = $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME;
+my $TIME_HIRES_AVAILABLE_WARNED = $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME;
 
 =head2 new
 
@@ -236,18 +243,18 @@ sub render {
     $info{n} = "\n";
     $info{p} = $priority;
     $info{P} = $$;
-    $info{H} = $Log::Log4perl::Layout::PatternLayout::HOSTNAME;
+    $info{H} = $HOSTNAME;
 
     if($self->{info_needed}->{r} || $self->{info_needed}->{R}) {
-        if($Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE) {
+        if($TIME_HIRES_AVAILABLE) {
             $info{r} = 
-                int((Time::HiRes::tv_interval ( $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME ))*1000);
+                int((Time::HiRes::tv_interval ( $PROGRAM_START_TIME ))*1000);
         } else {
-            if(! $Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE_WARNED) {
-                $Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE_WARNED++;
+            if(! $TIME_HIRES_AVAILABLE_WARNED) {
+                $TIME_HIRES_AVAILABLE_WARNED++;
                 # warn "Requested %r pattern without installed Time::HiRes\n";
             }
-            $info{r} = time() - $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME;
+            $info{r} = time() - $PROGRAM_START_TIME;
         }
     }
     if($self->{info_needed}->{R}) {
