@@ -227,8 +227,9 @@ The way module is implemented in order to ensure that each appender will track
 it's own elapsed time. This way the time display is trully the time spent
 between two consecutive log events for the given appender. Thus if different
 threshold are applied to two appenders logging in the same application it's
-normal that they both show different values for the time elapsed, since the 
-previous logging message might have not been issued at the same time.
+normal that they both show different values for the time elapsed for a same log
+statement, since the previous logging message might have not been issued at the
+same time.
 
 =head1 RATIONALE
 
@@ -243,7 +244,7 @@ program. This can be tedious as log patterns can change and might not always be
 on a single line. In fact, in a single application different appenders might
 even use different patterns and different thresholds.
 
-This is why this Perl module was created. Now the time elapsed between two
+That's why this Perl module was created. Now the time elapsed between two
 consecutive log events can be automatically inserted into the log statement.
 
 =head1 SEE ALSO
@@ -253,5 +254,13 @@ L<Log::Log4perl::Layout::PatternLayout>.
 =head1 AUTHOR
 
 Emmanuel Rodriguez, E<lt>emmanuel.rodriguez@gmail.comE<gt>.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2008 by Emmanuel Rodriguez
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.8.8 or,
+at your option, any later version of Perl 5 you may have available.
 
 =cut
