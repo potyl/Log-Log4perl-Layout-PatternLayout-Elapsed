@@ -1,0 +1,6 @@
+Revision history for Perl extension Log::Log4perl::Layout::TimedPatternLayout.
+
+0.01  Sat Feb  2 08:43:45 2008
+	- original version; created by h2xs 1.23 with options
+		-b 5.5.3 -AXc -n Log::Log4perl::Layout::TimedPatternLayout
+
