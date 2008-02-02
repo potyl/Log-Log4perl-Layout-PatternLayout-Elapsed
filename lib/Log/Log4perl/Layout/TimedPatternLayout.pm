@@ -121,22 +121,6 @@ consecutive log events can be automatically inserted into the log statement.
 This is now performed by Log4perl and doesn't require an external script in
 order to compute the values.
 
-=head1 SEE ALSO
-
-L<Log::Log4perl::Layout::PatternLayout>.
-
-=head1 AUTHOR
-
-Emmanuel Rodriguez, E<lt>emmanuel.rodriguez@gmail.comE<gt>.
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright (C) 2008 by Emmanuel Rodriguez
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.8 or,
-at your option, any later version of Perl 5 you may have available.
-
 =head1 METHODS
 
 This module defined the following methods.
@@ -177,7 +161,7 @@ sub new {
 
 =head2 render
 
-A copie of C<Log::Log4perl::Layout::PatternLayout::render()> with the code
+A copy of C<Log::Log4perl::Layout::PatternLayout::render()> with the code
 needed in order to add the fucntionality required for the format C<%R>.
 
 =cut
@@ -319,3 +303,21 @@ sub render {
 
 
 1;
+
+=head1 SEE ALSO
+
+L<Log::Log4perl::Layout::PatternLayout>.
+
+=head1 AUTHOR
+
+Emmanuel Rodriguez, E<lt>emmanuel.rodriguez@gmail.comE<gt>.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2008 by Emmanuel Rodriguez
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.8.8 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
