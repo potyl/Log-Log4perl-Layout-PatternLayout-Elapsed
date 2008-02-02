@@ -133,6 +133,8 @@ use Carp;
 
 use base qw(Log::Log4perl::Layout::PatternLayout);
 
+our $VERSION = '0.01';
+
 =head2 new
 
 This is the class constructor it ensures that the placeholder C<%R> is handled
