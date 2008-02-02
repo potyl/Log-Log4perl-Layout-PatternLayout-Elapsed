@@ -15,6 +15,7 @@ use Log::Log4perl::Appender::TestBuffer;
 
 exit main();
 
+
 sub main {
 
 	init_logger();
@@ -93,18 +94,21 @@ sub compare_times {
 }
 
 
+#
+# Initialize the logging system
+#
 sub init_logger {
 
 	my $conf = <<'__END__';
 log4perl.rootLogger = ALL, A, B
 
 log4perl.appender.A = Log::Log4perl::Appender::TestBuffer
-log4perl.appender.A.layout = org.apache.log4j.PatternLayout
+log4perl.appender.A.layout = Log::Log4perl::Layout::TimedPatternLayout
 log4perl.appender.A.layout.ConversionPattern = A %Rms %m%n
 log4perl.appender.A.Threshold = ALL
 
 log4perl.appender.B = Log::Log4perl::Appender::TestBuffer
-log4perl.appender.B.layout = org.apache.log4j.PatternLayout
+log4perl.appender.B.layout = Log::Log4perl::Layout::TimedPatternLayout
 log4perl.appender.B.layout.ConversionPattern = B %Rms %m%n
 log4perl.appender.B.Threshold = INFO
 __END__
