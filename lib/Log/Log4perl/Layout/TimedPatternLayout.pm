@@ -209,7 +209,7 @@ L<http://jakarta.apache.org/log4j/docs/api/org/apache/log4j/PatternLayout.html>.
 
 This pattern layout adds the format C<%R>, which is used to display the time
 elapsed since the last logging event. In the case of the first logging event,
-the time elapsed since the beginning of the application will be used.
+the time elapsed will be set to zero.
 
 The C<new()> method creates a new TimedPatternLayout, specifying its log format.
 The format string supports all formats implemented by 
@@ -224,12 +224,51 @@ for both formats.
 =head1 IMPLEMENTATION
 
 The way module is implemented in order to ensure that each appender will track
-it's own elapsed time. This way the time display is trully the time spent
-between two consecutive log events for the given appender. Thus if different
-threshold are applied to two appenders logging in the same application it's
-normal that they both show different values for the time elapsed for a same log
-statement, since the previous logging message might have not been issued at the
-same time.
+it's own elapsed time. This way the time display is truly the time spent between
+two consecutive log events for the given appender. Thus if different threshold
+are applied to two appenders logging in the same application it's normal that
+they both show different values for the time elapsed for a same log statement,
+since the previous logging message might have not been issued at the same time.
+
+Therefore the following Perl code:
+
+	
+	use Time::HiRes qw(sleep);
+	INFO "Start";
+	
+	sleep 0.1;
+	DEBUG "Pause: 0.1 sec";
+	
+	sleep 1.5;
+	INFO  "Pause: 1.5 secs";
+	
+	sleep 0.5;
+	DEBUG "Pause: 0.5 sec";
+	
+	WARN "End";
+
+When executed with the following Log4perl configuration:
+
+	log4perl.rootLogger = ALL, A, B
+	
+	log4perl.appender.A = Log::Log4perl::Appender::Screen
+	log4perl.appender.A.layout = Log::Log4perl::Layout::TimedPatternLayout
+	log4perl.appender.A.layout.ConversionPattern = %5rms %-5p   A %5Rms %m%n
+	log4perl.appender.A.Threshold = ALL
+
+	log4perl.appender.B = Log::Log4perl::Appender::Screen
+	log4perl.appender.B.layout = Log::Log4perl::Layout::TimedPatternLayout
+	log4perl.appender.B.layout.ConversionPattern = B %5Rms %m%n
+	log4perl.appender.B.Threshold = INFO
+
+Will produce the following results (output merged side by side manually):
+
+	  %r    %p   Logger   %R        %m            Logger   %R       %m
+	  44ms INFO    A       0ms  Start           |   B      0ms  Start
+	 144ms DEBUG   A     100ms  Pause: 0.1 sec  |
+	1644ms INFO    A    1500ms  Pause: 1.5 secs |   B   1600ms  Pause: 1.5 secs
+	2144ms DEBUG   A     500ms  Pause: 0.5 sec  |
+	2145ms WARN    A       1ms  End             |   B    501ms  End
 
 =head1 RATIONALE
 
@@ -246,6 +285,8 @@ even use different patterns and different thresholds.
 
 That's why this Perl module was created. Now the time elapsed between two
 consecutive log events can be automatically inserted into the log statement.
+This is now performed by Log4perl and doesn't require an external script in
+order to compute the values.
 
 =head1 SEE ALSO
 
