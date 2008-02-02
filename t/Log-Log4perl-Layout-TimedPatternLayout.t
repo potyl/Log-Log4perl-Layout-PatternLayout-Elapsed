@@ -41,19 +41,57 @@ sub main {
 	my @a = ($buffer_a =~ / (\d+)ms /g);
 	my @b = ($buffer_b =~ / (\d+)ms /g);
 	
-	diag("A:\n$buffer_a\n");
-	diag("B:\n$buffer_b\n");
+	diag("Buffers:");
+	diag($buffer_a);
+	diag($buffer_b);
 	
 	is(scalar(@a), 5, "Appender A has 5 logging events");
 	is(scalar(@b), 3, "Appender B has 3 logging events");
 
-	is($a[0], $b[0], "Expecting to start at the same time");
+	compare_times($a[0], $b[0], "Expecting to start at the same time");
 	
-	is($a[0] + $a[1] + $a[2], $b[0] + $b[1], "A1 + A2 + A3 == B1 + B2");
-	is($a[3] + $a[4], $b[2], "A4 + A5 == B3");
+	compare_times($a[0] + $a[1] + $a[2], $b[0] + $b[1], "A1 + A2 + A3 == B1 + B2");
+	compare_times($a[3] + $a[4], $b[2], "A4 + A5 == B3");
 
 	return 0;
 }
+
+
+#
+# Compares the times, if the times are in milliseconds than the function will
+# accept a difference of a few milliseconds.
+#
+sub compare_times {
+	my ($got, $expected, $message) = @_;
+
+	# We can't just compare the times for equality because it could happen that
+	# the two logging statements are not perform at the same millisecond. Instead
+	# compute the difference and accept a threshold
+	my $diff = $got - $expected;
+	$diff = -$diff if $diff < 0;
+
+	my $threshold = 10;
+	diag("Comparing $got <> $expected (diff $diff < $threshold)");
+	
+	# There's no way that this test will wait more than 900 seconds, so if the
+	# value is greater than 900 the time is in milliseconds.
+	if ($got > 900) {
+		
+		# Accept a small difference since we are computing in milliseconds
+		if ($diff < $threshold) {
+			# Fine, the difference is not too big, the test passed
+			pass($message);
+			return;
+		}
+		
+		# This is bad the test failed, let's contiune. The function will compare the
+		# values. Since they differ the test will fail, but at least it will report
+		# which test failed and the values compared
+	}
+
+	is($got, $expected, $message);	
+}
+
 
 sub init_logger {
 
