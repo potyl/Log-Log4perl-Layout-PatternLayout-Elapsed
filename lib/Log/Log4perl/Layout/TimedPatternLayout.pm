@@ -136,6 +136,121 @@ use Carp;
 
 use base qw(Log::Log4perl::Layout::PatternLayout);
 
+=head2 new
+
+This is the class constructor it's simply hack's with the instance created by
+the parent. The arguments are the same as 
+C<Log::Log4perl::Layout::PatternLayout->new()>.
+
+=cut
+sub a {
+	local $Log::Log4perl::ALLOW_CODE_IN_CONFIG_FILE = 1;
+#	Log::Log4perl::Layout::PatternLayout::add_global_cspec('R', \&compute_elapsed_time);
+	
+	my $sub = sub {
+		my ($self, $message, $category, $priority, $caller_level) = @_;
+
+		# Get the current time
+		my $current_time;
+		if ($Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE) {
+			$current_time = int(Time::HiRes::gettimeofday() * 1000);
+		}
+		else {
+			$current_time = time();
+		}
+
+		# Get the time of the last event
+#	my $last_time = $self->{last_time} || $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME;
+		my $last_time = $self->{last_time} || $current_time;
+
+		# Remember this as the last time
+		$self->{last_time} = $current_time;
+
+		# Compute the elapsed time
+		my $elapsed = $current_time - $last_time;
+		return $elapsed;
+	};
+	
+	
+	Log::Log4perl::Layout::PatternLayout::add_global_cspec(R => $sub);
+}
+
+sub new {
+	my $type = shift;
+
+#	my $self;
+#	{
+		
+if (0) {
+	my $options;
+	if (@_ == 0) {
+		$options = {};
+		unshift @_, $options;
+	}
+	else {
+		if (ref $_[0] eq 'HASH') {
+			$options = $_[0];
+		}
+		else {
+			$options = {};
+			unshift @_, $options;
+		}
+	}
+}
+
+	my $options;
+	if (ref $_[0] eq 'HASH') {
+		$options = $_[0];
+	}
+	else {
+		$options = {};
+		unshift @_, $options;
+	}
+
+
+#		local $Log::Log4perl::ALLOW_CODE_IN_CONFIG_FILE = 1;
+	$options->{cspec}{R}{value} = \&compute_elapsed_time;#$sub;
+#use Data::Dumper;
+#print Dumper(\@_);		
+	my $self = $type->SUPER::new(@_);
+#		$self->add_layout_cspec(R => $sub);
+#	}
+	
+	return $self;
+}
+
+=head2 compute_elapsed_time
+
+Callback passed to add_layout_cspec. It will return the value for the format %R.
+
+=cut
+
+sub compute_elapsed_time {
+	my ($self, $message, $category, $priority, $caller_level) = @_;
+
+	# Get the current time
+	my $current_time;
+	if ($Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE) {
+		$current_time = int(Time::HiRes::gettimeofday() * 1000);
+	}
+	else {
+		$current_time = time();
+	}
+
+		# Get the time of the last event
+#	my $last_time = $self->{last_time} || $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME;
+	my $last_time = $self->{last_time} || $current_time;
+
+	# Remember this as the last time
+	$self->{last_time} = $current_time;
+
+	# Compute the elapsed time
+	my $elapsed = $current_time - $last_time;
+	return $elapsed;
+}
+
+1;
+__END__
 # Global variables used by the function render(), the idea is to copy them here
 # so we can copy the contents of render() here without problems.
 my $HOSTNAME = $Log::Log4perl::Layout::PatternLayout::HOSTNAME;
@@ -146,22 +261,16 @@ my $TIME_HIRES_AVAILABLE_WARNED = $Log::Log4perl::Layout::PatternLayout::PROGRAM
 # PATCH: add %R to the list of formats available
 my $CSPECS = 'R' . $Log::Log4perl::Layout::PatternLayout::CSPECS;
 
-=head2 new
-
-This is the class constructor it's simply hack's with the instance created by
-the parent. The arguments are the same as 
-C<Log::Log4perl::Layout::PatternLayout->new()>.
-
-=cut
-
-sub new {
+sub new2 {
 
     my $type = shift;
 		
 		# PATCH: force our CSPECS through the constructor
 		local $Log::Log4perl::Layout::PatternLayout::CSPECS = $CSPECS;
+		unshift @_, {cspec => {}} unless ref $_[0] eq 'HASH';
+		$_[0]{cspec}{R} = sub {'100'};
 		my $self = $type->SUPER::new(@_);
-		$self->{CSPECS} = $CSPECS;
+#		$self->{CSPECS} = $CSPECS;
 		$self->{last_time} = undef;
 
     return $self;
