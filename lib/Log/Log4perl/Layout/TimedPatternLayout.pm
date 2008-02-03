@@ -18,9 +18,9 @@ From a log4perl configuration file:
 	
 	
 	# Log file with timestamps and elapsed time
-	log4perl.appender.FILE          = Log::Dispatch::FileRotate
-	log4perl.appender.FILE.filename = 'logs/app.log'
-	log4perl.appender.FILE.Threshold                = ALL
+	log4perl.appender.FILE           = Log::Dispatch::FileRotate
+	log4perl.appender.FILE.filename  = 'logs/app.log'
+	log4perl.appender.FILE.Threshold = ALL
 	
 	# Using both an the time elapsed since the begining and the last event
 	log4perl.appender.FILE.layout                   = Log::Log4perl::Layout::TimedPatternLayout
