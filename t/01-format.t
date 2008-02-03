@@ -129,7 +129,7 @@ log4perl.appender.B.layout.ConversionPattern = B %Rms %m%n
 log4perl.appender.B.Threshold = INFO
 
 log4perl.appender.C = Log::Log4perl::Appender::TestBuffer
-log4perl.appender.C.layout = Log::Log4perl::Layout::PatternLayout::Elapsed
+log4perl.appender.C.layout = Log::Log4perl::Layout::PatternLayout
 log4perl.appender.C.layout.ConversionPattern = C %Rms %m%n
 log4perl.appender.C.Threshold = INFO
 __END__
