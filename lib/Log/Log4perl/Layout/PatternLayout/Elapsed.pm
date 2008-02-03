@@ -2,7 +2,7 @@ package Log::Log4perl::Layout::PatternLayout::Elapsed;
 
 =head1 NAME
 
-Log::Log4perl::Layout::PatternLayout::Elapsed - Timed Pattern Layout
+Log::Log4perl::Layout::PatternLayout::Elapsed - Time elapsed between log events
 
 =head1 SYNOPSIS
 
@@ -36,16 +36,17 @@ Through Perl code (why would you do that?):
 
 =head1 DESCRIPTION
 
-Creates a pattern layout according to L<Log::Log4perl::Layout::PatternLayout>,
-which in turns is based on
-L<http://jakarta.apache.org/log4j/docs/api/org/apache/log4j/PatternLayout.html>.
-
 This layout adds the placeholder C<%R>, which is used to display the time
 elapsed since the last logging event. In the case of the first logging event,
 the time elapsed since the beginning of the application will be used.
 
-The C<new()> method creates a new PatternLayout::Elapsed, specifying its log
-format. The format string supports all placeholders implemented by 
+This module is a sub class of L<Log::Log4perl::Layout::PatternLayout>, which
+means that it implements that same formats and can used the same placeholders.
+The module L<Log::Log4perl::Layout::PatternLayout> is in turn based on 
+L<http://jakarta.apache.org/log4j/docs/api/org/apache/log4j/PatternLayout.html>.
+
+The C<new()> method creates a new PatternLayout, specifying its log format. The
+format string supports all placeholders implemented by
 L<Log::Log4perl::Layout::PatternLayout>, with the addition of the new
 placeholder:
 
