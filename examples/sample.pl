@@ -53,13 +53,13 @@ sub init_logger {
 log4perl.rootLogger = ALL, A, B
 
 log4perl.appender.A = Log::Log4perl::Appender::Screen
-log4perl.appender.A.layout = org.apache.log4j.PatternLayout
+log4perl.appender.A.layout = Log::Log4perl::Layout::PatternLayout::Elapsed
 log4perl.appender.A.layout.ConversionPattern = %5rms %-5p   A %5Rms %m%n
 log4perl.appender.A.stderr = 0
 log4perl.appender.A.Threshold = ALL
 
 log4perl.appender.B = Log::Log4perl::Appender::Screen
-log4perl.appender.B.layout = org.apache.log4j.PatternLayout
+log4perl.appender.B.layout = Log::Log4perl::Layout::PatternLayout::Elapsed
 log4perl.appender.B.layout.ConversionPattern = B %5Rms %m%n
 log4perl.appender.B.stderr = 0
 log4perl.appender.B.Threshold = INFO
