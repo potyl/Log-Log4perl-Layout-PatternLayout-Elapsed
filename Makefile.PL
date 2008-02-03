@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 WriteMakefile(
-	NAME         => 'Log::Log4perl::Layout::PatternLayout/Elapsed',
+	NAME         => 'Log::Log4perl::Layout::PatternLayout::Elapsed',
 	VERSION_FROM => 'lib/Log/Log4perl/Layout/PatternLayout/Elapsed.pm', # finds $VERSION
 	PREREQ_PM    => {
 		Log::Log4perl::Layout::PatternLayout => 0,
