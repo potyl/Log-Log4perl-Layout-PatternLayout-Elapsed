@@ -42,7 +42,7 @@ L<http://jakarta.apache.org/log4j/docs/api/org/apache/log4j/PatternLayout.html>.
 
 This layout adds the placeholder C<%R>, which is used to display the time
 elapsed since the last logging event. In the case of the first logging event,
-the time elapsed will be set to zero.
+the time elapsed since the beginning of the application will be used.
 
 The C<new()> method creates a new TimedPatternLayout, specifying its log format.
 The format string supports all placeholders implemented by 
@@ -56,13 +56,13 @@ placeholder:
 This module is implemented in order to ensure that each appender will track it's
 own elapsed time. This way the time displayed is truly the time spent between
 two consecutive log events for each appender. Thus if different threshold are
-applied to two appenders logging in the same application it's normal that they
-both show different values for the time elapsed for a same log statement, since
-the previous logging message might have not been issued at the same time.
+applied to two appenders logging in the same application it's normal if they
+both show different values for the time elapsed for a same log statement. This
+is because the previous logging message might have not been issued at the same
+time due to the different thresholds.
 
 Therefore the following Perl code:
 
-	
 	use Time::HiRes qw(sleep);
 	INFO "Start";
 	
@@ -103,15 +103,14 @@ Will produce the following results (output merged side by side manually):
 =head1 RATIONALE
 
 When a program is taking a long time to execute the first instinct is to check
-the logs and to find two consecutive log events with a high logging time 
-difference. This can sometimes show where program is taking a lot of time, or
-how much time a single loop iteration takes.
+the logs and to find which logging statements where issued after the hotspot.
 
 The problem is that the time elapsed between to logging events is not directly
 available in the logs. This value needs to be computed, usually by another
-program. This can be tedious as log patterns can change and might not always be
-on a single line. In fact, in a single application different appenders might
-even use different patterns and different thresholds.
+program by subtracting the times logged between to consecutive logging events.
+This can be tedious as log patterns can change and might not always be on a
+single line. In fact, in a single application different appenders might even
+use different patterns and different thresholds.
 
 That's why this Perl module was created. Now the time elapsed between two
 consecutive log events can be automatically inserted into the log statement.
@@ -120,7 +119,7 @@ order to compute the values.
 
 =head1 METHODS
 
-This module defined the following methods.
+This module defines the following methods:
 
 =cut
 
@@ -151,7 +150,7 @@ sub new {
 	# add the definition of the placeholder.
 	#
 
-	# Get the options passed 
+	# Get the options passed, if there are no options provide our own
 	my $options;
 	if (ref $_[0] eq 'HASH') {
 		$options = $_[0];
@@ -166,6 +165,7 @@ sub new {
 
 	return $type->SUPER::new(@_);
 }
+
 
 =head2 compute_elapsed_time
 
