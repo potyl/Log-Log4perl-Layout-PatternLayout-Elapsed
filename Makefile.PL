@@ -7,7 +7,6 @@ WriteMakefile(
 	VERSION_FROM => 'lib/Log/Log4perl/Layout/PatternLayout/Elapsed.pm', # finds $VERSION
 	PREREQ_PM    => {
 		Log::Log4perl::Layout::PatternLayout => 0,
-		Carp => 0,
 	}, # e.g., Module::Name => 1.1
 	($] >= 5.005 ?  ## Add these new keywords supported since 5.005
 		(ABSTRACT_FROM => 'lib/Log/Log4perl/Layout/PatternLayout/Elapsed.pm', # retrieve abstract from module
