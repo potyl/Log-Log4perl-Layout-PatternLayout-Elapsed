@@ -136,58 +136,6 @@ use base qw(Log::Log4perl::Layout::PatternLayout);
 # Indicates if Time::HiRes is available
 my $TIME_HIRES_AVAILABLE = $Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE;
 
-# Start time of the program
-#my $START_TIME = $TIME_HIRES_AVAILABLE ? $^T * 1000 : $^T;
-#	? _to_milliseconds(@{ $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME })
-#	: $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME
-;
-#warn "START_TIME = $START_TIME ^T = $^T";
-
-sub _to_milliseconds {
-	my ($seconds, $microseconds) = @_;
-	return ($seconds * 1_000) + int($microseconds / 1_000);
-}
-
-#
-# Returns the current time as the number of seconds or milliseconds since
-# I<epoch>. If the module L<Time::HiRes> is available then the time will be in
-# milliseconds otherwise seconds will be used.
-#
-# NOTE: This function must be declared before the BEGIN block
-#
-sub _current_time {
-
-	my ($seconds, $microseconds) = Log::Log4perl::Layout::PatternLayout::current_time();
-	
-#	return $TIME_HIRES_AVAILABLE ? _to_milliseconds($seconds, $microseconds) : $seconds;
-	if ($TIME_HIRES_AVAILABLE) {
-#		warn "TIME HiRes ", _to_milliseconds($seconds, $microseconds);
-		return _to_milliseconds($seconds, $microseconds);
-	}
-	
-#	warn "seconds $seconds";
-	return $seconds;
-	
-	#return $TIME_HIRES_AVAILABLE ? int(Time::HiRes::gettimeofday() * 1000) : time();
-}
-
-
-sub BEGIN2 {
-
-	# Check if Time::HiRes is available
-	if (Log::Log4perl::Util::module_available('Time::HiRes')) {
-		$TIME_HIRES_AVAILABLE = 1;
-		require Time::HiRes;
-	}
-	else {
-		$TIME_HIRES_AVAILABLE = 0;
-	}
-	
-	# Get the start time of the program
-#	$START_TIME = _current_time();
-}
-
-
 our $VERSION = '0.01';
 
 =head2 new
@@ -222,10 +170,10 @@ sub new {
 	# Create the new instance
 	my $self = $type->SUPER::new(@_);
 	
-	# Set the start time
+	# Set the start time of the program as the time of the last logging event
 	my $start = $Log::Log4perl::Layout::PatternLayout::PROGRAM_START_TIME;
 	if ($TIME_HIRES_AVAILABLE) {
-		$start = _to_milliseconds(@{ $start});
+		$start = _to_milliseconds(@{ $start });
 	}
 	$self->{last_time} = $start;
 	
@@ -244,7 +192,7 @@ sub compute_elapsed_time {
 
 	# Get the time of the current event
 	my $current_time;
-	if ($Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE) {
+	if ($TIME_HIRES_AVAILABLE) {
 		$current_time = _to_milliseconds(Time::HiRes::gettimeofday());
 	}
 	else {
@@ -260,25 +208,25 @@ sub compute_elapsed_time {
 }
 
 
-sub compute_elapsed_time2 {
-	my ($self, $message, $category, $priority, $caller_level) = @_;
-
-	# Get the current time
-	my $current_time = _current_time();
-
-	# Get the time of the last event
-	my $last_time = $self->{last_time} || $current_time;#$START_TIME;
-
-	# Remember the current time as the last time
-	$self->{last_time} = $current_time;
-
-	# Compute the elapsed time
-	return $current_time - $last_time;
+#
+# Returns the number of milliseconds from the given time values. The arguments
+# are expected to be a two-element array with the seconds and microseconds since
+# the epoch, as returned by Time::HiRes::gettimeofday().
+#
+sub _to_milliseconds {
+	my ($seconds, $microseconds) = @_;
+	return ($seconds * 1_000) + int($microseconds / 1_000);
 }
 
 
 1;
 
+=head1 BUGS
+
+If %d, %r or %R are used simultaneously it could happen that the values don't
+match withing a single logging statement. This is because Log4perl computes the
+current time for each placeholder and the time can change between the different
+invocations of the clock.
 
 =head1 SEE ALSO
 
