@@ -1,8 +1,8 @@
-package Log::Log4perl::Layout::TimedPatternLayout;
+package Log::Log4perl::Layout::PatternLayout::Elapsed;
 
 =head1 NAME
 
-Log::Log4perl::Layout::TimedPatternLayout - Timed Pattern Layout
+Log::Log4perl::Layout::PatternLayout::Elapsed - Timed Pattern Layout
 
 =head1 SYNOPSIS
 
@@ -10,9 +10,9 @@ From a log4perl configuration file:
 
 	log4perl.rootLogger = ALL, DEV, FILE
 	
-	# Colored console with TimedPatternLayout
+	# Colored console with PatternLayout::Elapsed
 	log4perl.appender.DEV                          = Log::Log4perl::Appender::ScreenColoredLevels
-	log4perl.appender.DEV.layout                   = Log::Log4perl::Layout::TimedPatternLayout
+	log4perl.appender.DEV.layout                   = Log::Log4perl::Layout::PatternLayout::Elapsed
 	log4perl.appender.DEV.layout.ConversionPattern = %5Rms %-5p %m [%M:%L]%n
 	log4perl.appender.DEV.Threshold                = ALL
 	
@@ -23,14 +23,14 @@ From a log4perl configuration file:
 	log4perl.appender.FILE.Threshold = ALL
 	
 	# Using both an the time elapsed since the begining and the last event
-	log4perl.appender.FILE.layout                   = Log::Log4perl::Layout::TimedPatternLayout
+	log4perl.appender.FILE.layout                   = Log::Log4perl::Layout::PatternLayout::Elapsed
 	log4perl.appender.FILE.layout.ConversionPattern = %d{ISO8601} (%5rms) %-5p [%-12c] %C{2} %M:%L - %m [%5Rms]%n
 
 Through Perl code (why would you do that?):
 
-	use Log::Log4perl::Layout::TimedPatternLayout;
+	use Log::Log4perl::Layout::PatternLayout::Elapsed;
 	
-	my $layout = Log::Log4perl::Layout::TimedPatternLayout->new(
+	my $layout = Log::Log4perl::Layout::PatternLayout::Elapsed->new(
 		'%5Rms %-5p %m [%M:%L]%n'
 	);
 
@@ -44,8 +44,8 @@ This layout adds the placeholder C<%R>, which is used to display the time
 elapsed since the last logging event. In the case of the first logging event,
 the time elapsed since the beginning of the application will be used.
 
-The C<new()> method creates a new TimedPatternLayout, specifying its log format.
-The format string supports all placeholders implemented by 
+The C<new()> method creates a new PatternLayout::Elapsed, specifying its log
+format. The format string supports all placeholders implemented by 
 L<Log::Log4perl::Layout::PatternLayout>, with the addition of the new
 placeholder:
 
@@ -82,12 +82,12 @@ When executed with the following Log4perl configuration:
 	log4perl.rootLogger = ALL, A, B
 	
 	log4perl.appender.A = Log::Log4perl::Appender::Screen
-	log4perl.appender.A.layout = Log::Log4perl::Layout::TimedPatternLayout
+	log4perl.appender.A.layout = Log::Log4perl::Layout::PatternLayout::Elapsed
 	log4perl.appender.A.layout.ConversionPattern = %5rms %-5p   A %5Rms %m%n
 	log4perl.appender.A.Threshold = ALL
 
 	log4perl.appender.B = Log::Log4perl::Appender::Screen
-	log4perl.appender.B.layout = Log::Log4perl::Layout::TimedPatternLayout
+	log4perl.appender.B.layout = Log::Log4perl::Layout::PatternLayout::Elapsed
 	log4perl.appender.B.layout.ConversionPattern = B %5Rms %m%n
 	log4perl.appender.B.Threshold = INFO
 

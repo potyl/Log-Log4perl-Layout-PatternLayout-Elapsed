@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-sample.pl - Example using the Log4Perl Timed Pattern Layout.
+sample.pl - Example using the Log4Perl Elapsed Pattern Layout.
 
 =head1 SYNOPSIS
 
@@ -14,7 +14,7 @@ rm all.txt a.txt b.txt
 
 =head1 DESCRIPTION
 
-This example shows how to use the Log4Perl Timed Pattern Layout. It also shows
+This example shows how to use the Log4Perl Elapsed Pattern Layout. It also shows
 how the layout behaves when used through different appenders with different
 thresholds.
 
@@ -70,7 +70,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<Log::Log4perl::Layout::TimedPatternLayout>.
+L<Log::Log4perl::Layout::PatternLayout::Elapsed>.
 
 =head1 AUTHOR
 

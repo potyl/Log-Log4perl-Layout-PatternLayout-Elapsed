@@ -6,7 +6,7 @@ use warnings;
 use Test::More tests => 7;
 
 BEGIN {
-	use_ok('Log::Log4perl::Layout::TimedPatternLayout');
+	use_ok('Log::Log4perl::Layout::PatternLayout::Elapsed');
 }
 
 use Log::Log4perl qw(:easy);
@@ -119,17 +119,17 @@ sub init_logger {
 log4perl.rootLogger = ALL, A, B, C
 
 log4perl.appender.A = Log::Log4perl::Appender::TestBuffer
-log4perl.appender.A.layout = Log::Log4perl::Layout::TimedPatternLayout
+log4perl.appender.A.layout = Log::Log4perl::Layout::PatternLayout::Elapsed
 log4perl.appender.A.layout.ConversionPattern = A %Rms %m%n
 log4perl.appender.A.Threshold = ALL
 
 log4perl.appender.B = Log::Log4perl::Appender::TestBuffer
-log4perl.appender.B.layout = Log::Log4perl::Layout::TimedPatternLayout
+log4perl.appender.B.layout = Log::Log4perl::Layout::PatternLayout::Elapsed
 log4perl.appender.B.layout.ConversionPattern = B %Rms %m%n
 log4perl.appender.B.Threshold = INFO
 
 log4perl.appender.C = Log::Log4perl::Appender::TestBuffer
-log4perl.appender.C.layout = Log::Log4perl::Layout::PatternLayout
+log4perl.appender.C.layout = Log::Log4perl::Layout::PatternLayout::Elapsed
 log4perl.appender.C.layout.ConversionPattern = C %Rms %m%n
 log4perl.appender.C.Threshold = INFO
 __END__
