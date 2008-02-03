@@ -2,7 +2,7 @@ package Log::Log4perl::Layout::PatternLayout::Elapsed;
 
 =head1 NAME
 
-Log::Log4perl::Layout::PatternLayout::Elapsed - Time elapsed between log events
+Log::Log4perl::Layout::PatternLayout::Elapsed - Logs the time elapsed between the last log event
 
 =head1 SYNOPSIS
 
@@ -129,8 +129,6 @@ use 5.006;
 use strict;
 use warnings;
 
-use Carp;
-
 use base qw(Log::Log4perl::Layout::PatternLayout);
 
 our $VERSION = '0.01';
@@ -193,8 +191,7 @@ sub compute_elapsed_time {
 	$self->{last_time} = $current_time;
 
 	# Compute the elapsed time
-	my $elapsed = $current_time - $last_time;
-	return $elapsed;
+	return $current_time - $last_time;
 }
 
 1;
