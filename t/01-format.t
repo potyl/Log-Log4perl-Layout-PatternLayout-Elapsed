@@ -11,7 +11,7 @@ BEGIN {
 
 use Log::Log4perl qw(:easy);
 use Log::Log4perl::Appender::TestBuffer;
-
+use Log::Log4perl::Layout::PatternLayout;
 
 exit main();
 
@@ -90,9 +90,7 @@ sub compare_times {
 	my $threshold = 10;
 	diag("Comparing $got <> $expected (diff $diff < $threshold)");
 	
-	# There's no way that this test will wait more than 900 seconds, so if the
-	# value is greater than 900 the time is in milliseconds.
-	if ($got > 900) {
+	if ($Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE) {
 		
 		# Accept a small difference since we are computing in milliseconds
 		if ($diff < $threshold) {
