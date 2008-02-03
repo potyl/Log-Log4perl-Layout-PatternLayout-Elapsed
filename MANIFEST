@@ -2,6 +2,6 @@ Changes
 Makefile.PL
 MANIFEST
 README
-t/Log-Log4perl-Layout-TimedPatternLayout.t
-lib/Log/Log4perl/Layout/TimedPatternLayout.pm
+t/01-format.t
+lib/Log/Log4perl/Layout/PatternLayout/Elapsed.pm
 examples/sample.pl
