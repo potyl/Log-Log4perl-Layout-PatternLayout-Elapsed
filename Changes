@@ -1,6 +1,10 @@
-Revision history for Perl extension Log::Log4perl::Layout::PatternLayout::Elapsed.
+Revision history for Log::Log4perl::Layout::PatternLayout::Elapsed.
+
+0.02  Thu Feb  7 21:11:52 2008
+	- Using Module::Install instead of ExtUtils::MakeMake
+	- Added more unit tests
+
 
 0.01  Sat Feb  2 08:43:45 2008
 	- original version; created by h2xs 1.23 with options
-		-b 5.5.3 -AXc -n Log::Log4perl::Layout::PatternLayout::Elapsed
-
+	  -b 5.5.3 -AXc -n Log::Log4perl::Layout::PatternLayout::Elapsed
