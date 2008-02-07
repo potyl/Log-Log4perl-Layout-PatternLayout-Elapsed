@@ -136,7 +136,7 @@ use base qw(Log::Log4perl::Layout::PatternLayout);
 # Indicates if Time::HiRes is available
 my $TIME_HIRES_AVAILABLE = $Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head2 new
 
