@@ -1,5 +1,5 @@
-Log-Log4perl-Layout-PatternLayout-Elapsed version 0.01
-===================================================
+Log-Log4perl-Layout-PatternLayout-Elapsed version 0.02
+======================================================
 
 This layout is a subclass of Log::Log4perl::Layout::PatternLayout which adds the
 format %R. This format is used to display the time elapsed between two
