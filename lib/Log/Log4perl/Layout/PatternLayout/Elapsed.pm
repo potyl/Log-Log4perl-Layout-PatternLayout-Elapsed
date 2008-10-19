@@ -224,9 +224,9 @@ sub _to_milliseconds {
 =head1 BUGS
 
 If %d, %r or %R are used simultaneously it could happen that the values don't
-match withing a single logging statement. This is because Log4perl computes the
+match within a single logging statement. This is because Log4perl computes the
 current time for each placeholder and the time can change between the different
-invocations of the clock.
+invocations of the clock's time.
 
 =head1 SEE ALSO
 
