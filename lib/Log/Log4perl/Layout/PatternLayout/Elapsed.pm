@@ -37,8 +37,8 @@ Through Perl code (why would you do that?):
 =head1 DESCRIPTION
 
 This layout adds the placeholder C<%R>, which is used to display the time
-elapsed since the last logging event. In the case of the first logging event,
-the time elapsed since the beginning of the application will be used.
+elapsed between two consecutive logging events. In the case of the first logging
+event the time elapsed since the beginning of the application will be displayed.
 
 This module is a sub class of L<Log::Log4perl::Layout::PatternLayout>, which
 means that it implements that same formats and can used the same placeholders.
@@ -56,7 +56,7 @@ placeholder:
 
 This module is implemented in order to ensure that each appender will track it's
 own elapsed time. This way the time displayed is truly the time spent between
-two consecutive log events for each appender. Thus if different threshold are
+two consecutive log events for each appender. Thus if different thresholds are
 applied to two appenders logging in the same application it's normal if they
 both show different values for the time elapsed for a same log statement. This
 is because the previous logging message might have not been issued at the same
