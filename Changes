@@ -1,5 +1,10 @@
 Revision history for Log::Log4perl::Layout::PatternLayout::Elapsed.
 
+0.03  Sat Oct 10 22:52:05 CEST 2009
+	- Module retirement (Log::Log4perl 1.25 includes this feature)
+	- Unit tests no longer perform real sleeps.
+
+
 0.02  Thu Feb  7 21:11:52 2008
 	- Using Module::Install instead of ExtUtils::MakeMake
 	- Added more unit tests
