@@ -36,6 +36,11 @@ Through Perl code (why would you do that?):
 
 =head1 DESCRIPTION
 
+B<NOTE>: L<Log::Log4perl> 1.25 includes already the functionality of this module
+in L<Log::Log4perl::Layout::PatternLayout>. It's strongly suggested that you use
+Log::Log4perl's implementation as it fixes some consistency issues when mixing
+%r and %R in the same logging message.
+
 This layout adds the placeholder C<%R>, which is used to display the time
 elapsed between two consecutive logging events. In the case of the first logging
 event the time elapsed since the beginning of the application will be displayed.
@@ -229,9 +234,12 @@ match within a single logging statement. This is because Log4perl computes the
 current time for each placeholder and the time can change between the different
 invocations of the clock's time.
 
+B<NOTE>: This bugs are fixed in Log::Log4perl 1.25.
+
 =head1 SEE ALSO
 
-L<Log::Log4perl::Layout::PatternLayout>.
+L<Log::Log4perl::Layout::PatternLayout> distributed with Log::Log4perl 1.25 or
+higher.
 
 =head1 AUTHOR
 
