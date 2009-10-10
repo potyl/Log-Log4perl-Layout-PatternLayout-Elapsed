@@ -16,4 +16,5 @@ README
 t/00-distribution.t
 t/00-pod-coverage.t
 t/00-signature.t
-t/01-format.t
+t/01-format-hires.t
+t/01-format-time.t
