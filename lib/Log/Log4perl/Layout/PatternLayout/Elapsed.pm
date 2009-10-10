@@ -144,7 +144,7 @@ use base qw(Log::Log4perl::Layout::PatternLayout);
 my $TIME_HIRES_AVAILABLE = Log::Log4perl::Util::module_available('Time::HiRes');
 
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head2 new
 
