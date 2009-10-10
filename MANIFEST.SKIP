@@ -1,0 +1,6 @@
+^Log-Log4perl-Layout-PatternLayout-Elapsed-.*\.tar\.gz$
+^blib/
+^\.git/
+^Makefile$
+^\.gitignore$
+^pm_to_blib$
