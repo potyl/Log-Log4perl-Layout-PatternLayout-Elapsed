@@ -129,12 +129,13 @@ use 5.006;
 use strict;
 use warnings;
 
-#use Log::Log4perl::Util;
+use Log::Log4perl::Util;
 
 use base qw(Log::Log4perl::Layout::PatternLayout);
 
 # Indicates if Time::HiRes is available
-my $TIME_HIRES_AVAILABLE = $Log::Log4perl::Layout::PatternLayout::TIME_HIRES_AVAILABLE;
+my $TIME_HIRES_AVAILABLE = Log::Log4perl::Util::module_available('Time::HiRes');
+
 
 our $VERSION = '0.03';
 
