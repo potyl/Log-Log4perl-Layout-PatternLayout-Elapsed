@@ -62,7 +62,16 @@ BEGIN {
 use Log::Log4perl qw(:easy);
 use Log::Log4perl::Appender::TestBuffer;
 
-exit main();
+
+if ($Log::Log4perl::VERSION < 1.25) {
+	exit main();
+}
+else {
+	SKIP:
+	{
+		skip "functionality merged into log4perl", 2;
+	}
+}
 
 
 # Pretend that the script was at sleep

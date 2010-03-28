@@ -136,9 +136,15 @@ use 5.006;
 use strict;
 use warnings;
 
+use Log::Log4perl;
 use Log::Log4perl::Util;
 
 use base qw(Log::Log4perl::Layout::PatternLayout);
+
+# This functonality was merged in Log4perl 1.25 and causes this module to clash
+# with those releases. If the code is already there then we simply skip our
+# current implementation.
+my $IS_MERGED = ($Log::Log4perl::VERSION >= 1.25);
 
 # Indicates if Time::HiRes is available
 my $TIME_HIRES_AVAILABLE = Log::Log4perl::Util::module_available('Time::HiRes');
@@ -154,6 +160,9 @@ by Log4perl.
 =cut
 
 sub new {
+	# If the code is already merged in Log4perl we use that version
+	return Log::Log4perl::Layout::PatternLayout->new(@_) if $IS_MERGED;
+
 	my $type = shift;
 	
 	#
