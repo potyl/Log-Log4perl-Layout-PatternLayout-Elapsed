@@ -150,7 +150,7 @@ my $IS_MERGED = ($Log::Log4perl::VERSION >= 1.25);
 my $TIME_HIRES_AVAILABLE = Log::Log4perl::Util::module_available('Time::HiRes');
 
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 =head2 new
 
