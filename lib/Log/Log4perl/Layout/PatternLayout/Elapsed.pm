@@ -236,7 +236,7 @@ match within a single logging statement. This is because Log4perl computes the
 current time for each placeholder and the time can change between the different
 invocations of the clock's time.
 
-B<NOTE>: This bugs are fixed in Log::Log4perl 1.25.
+B<NOTE>: This bugs is fixed in Log::Log4perl 1.25.
 
 =head1 SEE ALSO
 
