@@ -1,5 +1,10 @@
 Revision history for Log::Log4perl::Layout::PatternLayout::Elapsed.
 
+0.06 Sun Apr 11 09:20:21 CEST 2010
+	- Fix the version numbering.
+	- Now using Module::Build.
+
+
 0.05 Sun Mar 28 10:31:02 CEST 2010
 	- Don't clash if Log4perl 1.25 or greater is already installed.
 
