@@ -1,5 +1,9 @@
 Revision history for Log::Log4perl::Layout::PatternLayout::Elapsed.
 
+0.07 Mon Jul 27 09:20:43 CEST 2015
+	- Fix warnings in unit tests
+
+
 0.06 Sun Apr 11 09:20:21 CEST 2010
 	- Fix the version numbering.
 	- Now using Module::Build.
